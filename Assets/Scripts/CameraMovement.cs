@@ -1,13 +1,7 @@
-﻿//	Created by: Sunny Valley Studio 
-//	https://svstudio.itch.io
-
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace SVS
 {
-
     public class CameraMovement : MonoBehaviour
     {
         public Camera gameCamera;
@@ -19,7 +13,7 @@ namespace SVS
         }
         public void MoveCamera(Vector3 inputVector)
         {
-            var movementVector = Quaternion.Euler(0,30,0) * inputVector;
+            var movementVector = Quaternion.Euler(0, 30, 0) * inputVector;
             gameCamera.transform.position += movementVector * Time.deltaTime * cameraMovementSpeed;
         }
     }

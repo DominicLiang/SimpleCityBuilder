@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-/// <summary>
-/// Source https://github.com/lordjesus/Packt-Introduction-to-graph-algorithms-for-game-developers
-/// </summary>
+
 public class Point
 {
     public int X { get; set; }
@@ -73,7 +71,6 @@ public class Grid
         _grid = new CellType[width, height];
     }
 
-    // Adding index operator to our Grid class so that we can use grid[][] to access specific cell from our grid. 
     public CellType this[int i, int j]
     {
         get
@@ -102,7 +99,7 @@ public class Grid
         }
     }
 
-    public static bool IsCellWakable(CellType cellType, bool aiAgent = false)
+    public static bool IsCellWalkable(CellType cellType, bool aiAgent = false)
     {
         if (aiAgent)
         {
@@ -125,7 +122,7 @@ public class Grid
 
     public List<Point> GetAdjacentCells(Point cell, bool isAgent)
     {
-        return GetWakableAdjacentCells((int)cell.X, (int)cell.Y, isAgent);
+        return GetWalkableAdjacentCells(cell.X, cell.Y, isAgent);
     }
 
     public float GetCostOfEnteringCell(Point cell)
@@ -155,12 +152,12 @@ public class Grid
         return adjacentCells;
     }
 
-    public List<Point> GetWakableAdjacentCells(int x, int y, bool isAgent)
+    public List<Point> GetWalkableAdjacentCells(int x, int y, bool isAgent)
     {
         List<Point> adjacentCells = GetAllAdjacentCells(x, y);
         for (int i = adjacentCells.Count - 1; i >= 0; i--)
         {
-            if(IsCellWakable(_grid[adjacentCells[i].X, adjacentCells[i].Y], isAgent)==false)
+            if (IsCellWalkable(_grid[adjacentCells[i].X, adjacentCells[i].Y], isAgent) == false)
             {
                 adjacentCells.RemoveAt(i);
             }
@@ -181,31 +178,25 @@ public class Grid
         return adjacentCells;
     }
 
-    /// <summary>
-    /// Returns array [Left neighbour, Top neighbour, Right neighbour, Down neighbour]
-    /// </summary>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
-    /// <returns></returns>
     public CellType[] GetAllAdjacentCellTypes(int x, int y)
     {
-        CellType[] neighbours = { CellType.None, CellType.None, CellType.None, CellType.None };
+        CellType[] neighbors = { CellType.None, CellType.None, CellType.None, CellType.None };
         if (x > 0)
         {
-            neighbours[0] = _grid[x - 1, y];
-        }
-        if (x < _width - 1)
-        {
-            neighbours[2] = _grid[x + 1, y];
+            neighbors[0] = _grid[x - 1, y];
         }
         if (y > 0)
         {
-            neighbours[3] = _grid[x, y - 1];
+            neighbors[3] = _grid[x, y - 1];
+        }
+        if (x < _width - 1)
+        {
+            neighbors[2] = _grid[x + 1, y];
         }
         if (y < _height - 1)
         {
-            neighbours[1] = _grid[x, y + 1];
+            neighbors[1] = _grid[x, y + 1];
         }
-        return neighbours;
+        return neighbors;
     }
 }

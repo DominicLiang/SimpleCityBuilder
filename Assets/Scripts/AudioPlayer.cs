@@ -1,13 +1,7 @@
-﻿//	Created by: Sunny Valley Studio 
-//	https://svstudio.itch.io
-
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace SVS
 {
-
     public class AudioPlayer : MonoBehaviour
     {
         public AudioClip placementSound;
@@ -26,7 +20,7 @@ namespace SVS
 
         public void PlayPlacementSound()
         {
-            if(placementSound != null)
+            if (placementSound != null)
             {
                 audioSource.PlayOneShot(placementSound);
             }
