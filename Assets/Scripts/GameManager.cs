@@ -8,16 +8,66 @@ public class GameManager : MonoBehaviour
 
     private InputManager inputManager;
     private RoadManager roadManager;
+    private StructureManager structureManager;
+    private UIController uiController;
 
     private void Awake()
     {
         inputManager = GetComponent<InputManager>();
         roadManager = GetComponent<RoadManager>();
+        structureManager = GetComponent<StructureManager>();
+        uiController = GetComponent<UIController>();
     }
 
     private void Start()
     {
-        inputManager.OnMouseDown += HandleMouseDown;
+        uiController.OnRoadPlacement += RoadPlacementHandler;
+        uiController.OnHousePlacement += HousePlacementHandler;
+        uiController.OnSpecialPlacement += SpecialPlacementHandler;
+        uiController.OnBigStructurePlacement += BigStructurePlacementHandler;
+    }
+
+    private void BigStructurePlacementHandler()
+    {
+        ClearInputActions();
+
+        inputManager.OnMouseDown += structureManager.PlaceBigStructure;
+    }
+
+    private void SpecialPlacementHandler()
+    {
+        ClearInputActions();
+
+        inputManager.OnMouseDown += structureManager.PlaceSpecial;
+    }
+
+    private void HousePlacementHandler()
+    {
+        ClearInputActions();
+
+        inputManager.OnMouseDown += structureManager.PlaceHouse;
+    }
+
+    private void RoadPlacementHandler()
+    {
+        ClearInputActions();
+
+        inputManager.OnMouseDown += roadManager.PlaceRoad;
+        inputManager.OnMouseHold += roadManager.PlaceRoad;
+        inputManager.OnMouseUp += roadManager.FinishPlacingRoad;
+    }
+
+    private void ClearInputActions()
+    {
+        inputManager.OnMouseDown -= roadManager.PlaceRoad;
+        inputManager.OnMouseHold -= roadManager.PlaceRoad;
+        inputManager.OnMouseUp -= roadManager.FinishPlacingRoad;
+
+        inputManager.OnMouseDown -= structureManager.PlaceHouse;
+
+        inputManager.OnMouseDown -= structureManager.PlaceSpecial;
+
+        inputManager.OnMouseDown -= structureManager.PlaceBigStructure;
     }
 
     private void Update()
@@ -25,10 +75,5 @@ public class GameManager : MonoBehaviour
         cameraMovement.MoveCamera(new Vector3(inputManager.CameraMovementVector.x,
                                               0,
                                               inputManager.CameraMovementVector.y));
-    }
-
-    private void HandleMouseDown(Vector3Int pos)
-    {
-        roadManager.PlaceRoad(pos);
     }
 }
